@@ -1,17 +1,72 @@
-const FindButton = document.getElementById("FindButton")
-const UserInput = document.getElementById("UserInput")
-const Form = document.getElementById("GetUserForm")
+var FindButton = document.getElementById("FindButton")
+var UserInput = document.getElementById("UserInput")
+var Form = document.getElementById("GetUserForm")
+
+const URL = "https://api.github.com/users/"
 
 Form.addEventListener("submit", function(e){
     e.preventDefault()
+    
+    let Http = new XMLHttpRequest
 
-    fetch(`https://api.github.com/users/${UserInput.value}`)
-    .then((result) => result.json())
-    .then((data) => {
-        let Container = document.createElement("div")
+    Http.onreadystatechange = (e) => {
+            if (Http.readyState == 4) {
+                if (Http.status == 200) {
+                    if (document.getElementById("Container") != null) {
+                        document.body.removeChild(document.getElementById("Container"))
+                    }
+                    if (document.getElementById("Error") != null) {
+                        Form.removeChild(document.getElementById("Error"))
+                    } 
 
-        document.body.appendChild(Container)
+                    let UserData = JSON.parse(Http.response)
+                    let DataToShow = {
+                        "Login: " : `<a href="https://github.com/${UserData.login}"> ${UserData.login} </a>`,
+                        "Name: " : UserData.name,
+                        "Bio: " : UserData.bio,
+                        "Repos: " : UserData.public_repos,
+                        "Id: " :  UserData.id
+                    }
 
-        Container.innerHTML = `<img src="${data.avatar_url}"> <br> Name: ${data.name} <br> Bio: ${data.bio} <br> ID: ${data.id}`
-    })
+                    if (UserData.bio == null) {
+                        delete(DataToShow["Bio: "])
+                    }
+                    if (UserData.name == null) {
+                        delete(DataToShow["Name: "])
+                    }
+
+                    let Container = document.createElement("div")
+                    Container.id = "Container"
+                    Container.innerHTML += `<img src="${UserData.avatar_url}"> <hr> <br>`
+                    
+                    let TxtContainer = document.createElement("div")
+                    TxtContainer.id = "TxtContainer"
+
+                    for (D in DataToShow) {
+                        TxtContainer.innerHTML += D + DataToShow[D] + "<br><br>"
+                    }
+
+                    document.body.appendChild(Container)
+                    Container.appendChild(TxtContainer)
+                }
+                else {
+                    if (document.getElementById("Error") != null) {
+                        Form.removeChild(document.getElementById("Error"))
+                    }
+                    if (document.getElementById("Container") != null) {
+                        document.body.removeChild(document.getElementById("Container"))
+                    } 
+
+                    let Error = document.createElement("span")
+                    Error.id = "Error"
+                    Error.innerHTML = "<br> Can't find user. Try using a valid username"
+                    Form.appendChild(Error)
+
+                    return 0
+                }
+            }
+        }
+
+    Http.open("GET", URL + UserInput.value);
+    Http.send();    
 })
