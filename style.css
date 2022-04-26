@@ -7,6 +7,7 @@
     --IdleColor: #cfcfcf;
     --TxtColor: #ffffff;
     --ErrColor: #ff5252;
+    --LinkColor: #ff00ff;
 }
 
 /* General Settings */
@@ -37,12 +38,19 @@ h1 {
     text-align: center;
 }
 
+a {
+    color: var(--LinkColor);
+    background-color: var(--TColor);
+    border-radius: 5px;
+    padding: 4px 4px;
+}
+
 /* Form CSS */
 
 .Search {
     text-align: center;
     margin: 10px;
-    width: 55%;
+    width: 80%;
 }
 
 .Search button {
@@ -60,12 +68,12 @@ h1 {
     font-size: 20px;
 
     height: 40px;
-    width: 60%;
+    width: 50%;
     transition-duration: .50s;
 }
 
 .Search button:hover {
-    width: 70%;
+    width: 60%;
     background-color: white;
 }
 
@@ -84,17 +92,17 @@ h1 {
     font-size: 20px;
 
     height: 40px;
-    width: 70%;
+    width: 60%;
     transition-duration: .50s;
 }
 
 .Search input:hover {
-    width: 80%;
+    width: 70%;
     background-color: white;
 }
 
 .Search input:focus {
-    width: 85%;
+    width: 75%;
     background-color: white;
 }
 
@@ -110,14 +118,12 @@ h1 {
 
     position: relative;
     height: 30%;
-    width: 40%;
-    text-align: right;
+    width: 50%;
+    text-align: center;
 }
 
 #Container hr {
     border: 1px solid var(--SColor);
-    display: flex;
-    flex-direction: column;
 
     width: 95%;
 }
@@ -126,18 +132,15 @@ h1 {
     margin: 10px;
 
     border: 10px solid var(--SColor);
-     
+
     border-radius: 50%;
     width: 30%;
     height: 30%;
 }
 
 #TxtContainer {
-    position: absolute;
-    top: 0;
     font-size: 18px;
 
     margin: 10px;
-    padding: 8px 8px;
-    text-align: left;
+    padding: 4px 4px;
 }
