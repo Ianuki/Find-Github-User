@@ -7,6 +7,17 @@ const URL = "https://api.github.com/users/"
 Form.addEventListener("submit", function(e){
     e.preventDefault()
     
+    if (UserInput.value == "") {
+        if (document.getElementById("Container") != null) {
+            document.body.removeChild(document.getElementById("Container"))
+        }
+        if (document.getElementById("Error") != null) {
+            Form.removeChild(document.getElementById("Error"))
+        }
+
+        return 0;
+    }
+
     let Http = new XMLHttpRequest
 
     Http.onreadystatechange = (e) => {
@@ -21,23 +32,18 @@ Form.addEventListener("submit", function(e){
 
                     let UserData = JSON.parse(Http.response)
                     let DataToShow = {
-                        "Login: " : `<a href="https://github.com/${UserData.login}"> ${UserData.login} </a>`,
+                        "Profile: " : `<a href="https://github.com/${UserData.login}"> ${UserData.login} </a>`,
                         "Name: " : UserData.name,
-                        "Bio: " : UserData.bio,
                         "Repos: " : UserData.public_repos,
                         "Id: " :  UserData.id
                     }
 
-                    if (UserData.bio == null) {
-                        delete(DataToShow["Bio: "])
-                    }
                     if (UserData.name == null) {
                         delete(DataToShow["Name: "])
                     }
 
                     let Container = document.createElement("div")
                     Container.id = "Container"
-                    Container.innerHTML += `<img src="${UserData.avatar_url}"> <hr> <br>`
                     
                     let TxtContainer = document.createElement("div")
                     TxtContainer.id = "TxtContainer"
@@ -45,6 +51,8 @@ Form.addEventListener("submit", function(e){
                     for (D in DataToShow) {
                         TxtContainer.innerHTML += D + DataToShow[D] + "<br><br>"
                     }
+
+                    Container.innerHTML += `<img src="${UserData.avatar_url}">`
 
                     document.body.appendChild(Container)
                     Container.appendChild(TxtContainer)
